@@ -1,27 +1,29 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-class Firestore {
-  final CollectionReference todoRef =
-      FirebaseFirestore.instance.collection('Product');
+class Database {
+  final CollectionReference orderRef = FirebaseFirestore.instance.collection('Order Table');
+// Add Order Function
 
-  Future<void> addTodo(
-      {required String taskName, required String time}) {
-    return todoRef.add({
-      'task_name': taskName,
-      'time': time,
-    });
-  }
-
-  Stream<QuerySnapshot> getTodos() {
-    return todoRef.snapshots();
-  }
-
-  Future<void> updateTodo(
-      {required String taskId, required Map<String, dynamic> updatedData}) {
-    return todoRef.doc(taskId).update(updatedData);
-  }
-
-  Future<void> deleteTodo({required String taskId}) {
-    return todoRef.doc(taskId).delete();
-  }
+Future addOrder(int ordersID, String customerName, double totalCost, int quantity) async {
+  return await orderRef.add({
+    'ordersID' : ordersID,
+    'customerName': customerName,
+    'totalCost' : totalCost,
+    'quantity' : quantity,
+    'orderDate' : FieldValue.serverTimestamp()
+  });
 }
+// Get Function
+Stream<QuerySnapshot> getOrders(){
+  return orderRef.snapshots();
+}
+}
+
+  // Future<void> updateTodo(
+  //     {required String taskId, required Map<String, dynamic> updatedData}) {
+  //   return todoRef.doc(taskId).update(updatedData);
+  // }
+
+  // Future<void> deleteTodo({required String taskId}) {
+  //   return todoRef.doc(taskId).delete();
+  // }
